@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><testsuite name="nosetests" tests="28" errors="0" failures="0" skip="0"><testcase classname="ATC2_0.tests.AirlineTestCases" name="test_airline_create_edit_delete" time="0.555"></testcase><testcase classname="ATC2_0.tests.AirlineTestCases" name="test_airline_create_validation" time="0.388"></testcase><testcase classname="ATC2_0.tests.AirlineTestCases" name="test_airline_delete_validation" time="0.256"></testcase><testcase classname="ATC2_0.tests.AirlineTestCases" name="test_airline_update_validation" time="0.285"></testcase><testcase classname="ATC2_0.tests.AirportTestCases" name="test_airport_create_edit_delete" time="0.328"></testcase><testcase classname="ATC2_0.tests.AirportTestCases" name="test_airport_create_validation" time="0.309"></testcase><testcase classname="ATC2_0.tests.AirportTestCases" name="test_airport_delete_validation" time="0.257"></testcase><testcase classname="ATC2_0.tests.AirportTestCases" name="test_airport_update_validation" time="0.309"></testcase><testcase classname="ATC2_0.tests.GateTestCases" name="test_gate_create_edit_delete" time="0.361"></testcase><testcase classname="ATC2_0.tests.GateTestCases" name="test_gate_create_validation" time="0.334"></testcase><testcase classname="ATC2_0.tests.GateTestCases" name="test_gate_delete_validation" time="0.255"></testcase><testcase classname="ATC2_0.tests.GateTestCases" name="test_gate_update_validation" time="0.347"></testcase><testcase classname="ATC2_0.tests.PlaneTestCases" name="test_plane_create_edit_delete" time="0.437"></testcase><testcase classname="ATC2_0.tests.PlaneTestCases" name="test_plane_create_validation" time="0.352"></testcase><testcase classname="ATC2_0.tests.PlaneTestCases" name="test_plane_delete_validation" time="0.265"></testcase><testcase classname="ATC2_0.tests.PlaneTestCases" name="test_plane_update_validation" time="0.271"></testcase><testcase classname="ATC2_0.tests.RunwayTestCases" name="test_runway_create_edit_delete" time="0.342"></testcase><testcase classname="ATC2_0.tests.RunwayTestCases" name="test_runway_create_validation" time="0.344"></testcase><testcase classname="ATC2_0.tests.RunwayTestCases" name="test_runway_delete_validation" time="0.261"></testcase><testcase classname="ATC2_0.tests.RunwayTestCases" name="test_runway_update_validation" time="0.331"></testcase><testcase classname="ATC2_0.tests.SimulationTests" name="test_duplicate_gate" time="0.845"><system-out><![CDATA[airports loaded
+airlines loaded
+airport / airlines loaded
+gates loaded
+runways loaded
+planes loaded
+]]></system-out></testcase><testcase classname="ATC2_0.tests.SimulationTests" name="test_duplicate_runway" time="0.916"><system-out><![CDATA[airports loaded
+airlines loaded
+airport / airlines loaded
+gates loaded
+runways loaded
+planes loaded
+HERE
+HERE
+]]></system-out></testcase><testcase classname="ATC2_0.tests.SimulationTests" name="test_head_on_collision" time="0.883"><system-out><![CDATA[airports loaded
+airlines loaded
+airport / airlines loaded
+gates loaded
+runways loaded
+planes loaded
+]]></system-out></testcase><testcase classname="ATC2_0.tests.SimulationTests" name="test_rear_collision" time="0.923"><system-out><![CDATA[airports loaded
+airlines loaded
+airport / airlines loaded
+gates loaded
+runways loaded
+planes loaded
+]]></system-out></testcase><testcase classname="ATC2_0.tests.SimulationTests" name="test_tbone_collision" time="0.946"><system-out><![CDATA[airports loaded
+airlines loaded
+airport / airlines loaded
+gates loaded
+runways loaded
+planes loaded
+]]></system-out></testcase><testcase classname="ATC2_0.tests.SimulationTests" name="test_too_many_passengers" time="0.892"><system-out><![CDATA[airports loaded
+airlines loaded
+airport / airlines loaded
+gates loaded
+runways loaded
+planes loaded
+]]></system-out></testcase><testcase classname="ATC2_0.tests.SimulationTests" name="test_too_small_gate" time="0.908"><system-out><![CDATA[airports loaded
+airlines loaded
+airport / airlines loaded
+gates loaded
+runways loaded
+planes loaded
+]]></system-out></testcase><testcase classname="ATC2_0.tests.SimulationTests" name="test_too_small_runway" time="0.900"><system-out><![CDATA[airports loaded
+airlines loaded
+airport / airlines loaded
+gates loaded
+runways loaded
+planes loaded
+]]></system-out></testcase></testsuite>

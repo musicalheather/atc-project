@@ -1,0 +1,95 @@
+---
+- hosts: vpc
+  vars_files:
+    - vars/eks.yml
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ aws_access_key }}"
+    AWS_SECRET_ACCESS_KEY: "{{ aws_secret_key }}"
+    AWS_REGION: "{{ aws_region }}"
+  tasks:
+    - name: create namespace
+      k8s_raw:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: "{{ k8s_namespace }}"
+    
+    - name: create deployment
+      k8s_raw:
+        state: present
+        definition:
+          apiVersion: extensions/v1beta1
+          kind: Deployment
+          metadata:
+            name: "{{ k8s_deployment }}"
+            namespace: "{{ k8s_namespace }}"
+          spec:
+            replicas: 5
+            template:
+              metadata:
+                labels:
+                  app: "{{ k8s_name }}"
+              spec:
+                containers:
+                - image: "{{ k8s_image }}:{{ k8s_version }}"
+                  imagePullPolicy: Always
+                  name: "{{ k8s_name }}"
+                  env:
+                  - name: DBHOST
+                    value: "{{ rds_host }}"
+                  - name: DBPORT
+                    value: "{{ rds_port }}"
+                  - name: DBNAME
+                    value: "{{ rds_db_name }}"
+                  - name: PGUSER
+                    value: "{{ rds_user }}"
+                  - name: PGPASS
+                    value: "{{ rds_pass }}"
+                  ports:
+                  - containerPort: 8000
+    
+    - name: create service
+      k8s_raw:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: "{{ k8s_service }}"
+            namespace: "{{ k8s_namespace }}"
+          spec:
+            ports:
+              - port: "{{ k8s_exposed_port }}"
+                targetPort: "{{ k8s_container_port }}"
+                protocol: TCP
+            type: NodePort
+            selector:
+              app: "{{ k8s_name }}"
+        
+    - name: create ingress
+      k8s_raw:
+        state: present
+        definition:
+          apiVersion: v1beta1
+          kind: Ingress
+          metadata:
+            name: "{{ k8s_ingress }}"
+            namespace: "{{ k8s_namespace }}"
+            annotations:
+              kubernetes.io/ingress.class: alb
+              alb.ingress.kubernetes.io/scheme: internet-facing
+            labels:
+              app: "{{ k8s_ingress }}"
+          spec:
+            rules:
+              - http:
+                  paths:
+                    - path: /*
+                      backend:
+                        serviceName: "{{ k8s_service }}"
+                        servicePort: "{{ k8s_exposed_port }}"
+
+
+

@@ -1,0 +1,14 @@
+[run]
+include =
+    ATC2_0/*views.py
+    ATC2_0/urls.py
+    ATC2_0/helpers.py
+    ATC2_0/management/commands/load_data.py
+
+
+[report]
+include =
+    ATC2_0/*views.py
+    ATC2_0/urls.py
+    ATC2_0/helpers.py
+    ATC2_0/management/commands/load_data.py

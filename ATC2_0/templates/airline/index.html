@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if perms.ATC2_0.add_airline %}
+    <div class="float-right">
+        <a href="{% url 'airline_create' %}" class="btn btn-success">New Airline</a>
+    </div>
+    {% endif %}
+    <div class="clearfix"></div>
+    <table class="table table-striped">
+        <caption> Airlines </caption>
+        <thead>
+            <tr>
+                {% if perms.ATC2_0.change_airline %}
+                <th id="th_airline_1">Edit</th>
+                {% endif %}
+                <th id="th_airline_2">Name</th>
+                {% if perms.ATC2_0.delete_airline %}
+                <th id="th_airline_3">Delete</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for airline in object_list %}
+                <tr>
+                    {% if perms.ATC2_0.change_airline %}
+                    <td><a href="{% url 'airline_edit' airline.id %}" class="btn btn-primary">Edit</a></td>
+                    {% endif %}
+                    <td>{{ airline.name }}</td>
+                    {% if perms.ATC2_0.delete_airline %}
+                    <td><a href="{% url 'airline_delete' airline.id %}" class="btn btn-danger">Delete</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

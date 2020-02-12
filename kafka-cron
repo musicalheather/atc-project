@@ -1,0 +1,2 @@
+SHELL=/bin/bash
+* * * * * . $HOME/.profile; . /app/project_env.sh; cd /app; /usr/local/bin/python manage.py process_kafka > /app/kafka.log 2>&1

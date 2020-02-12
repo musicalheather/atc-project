@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form class="form" action="" method="post">
+        {% csrf_token %}
+        <p class="text-center">This object will be deleted, and once deleted, cannot be recovered.</p>
+        <div class="float-right">
+            <input type="submit" class="btn btn-danger" value="Confirm" name="confirm_delete" />
+        </div>
+        <div class="clearfix"></div>
+    </form>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if perms.ATC2_0.add_plane %}
+    <div class="float-right">
+        <a href="{% url 'plane_create' %}" class="btn btn-success">New Plane</a>
+    </div>
+    {% endif %}
+    <div class="clearfix"></div>
+    <table class="table table-striped" style="margin-left: -170px">
+        <caption> Planes </caption>
+        <thead>
+            <tr>
+                {% if perms.ATC2_0.change_plane %}
+                <th id="th_plane_1">Edit</th>
+                {% endif %}
+                <th id="header_id">Identifier</th>
+                <th id="header_size">Size</th>
+                <th id="header_airline">Airline</th>
+                <th id="header_out_airport">From</th>
+                <th id="header_from_airport">To</th>
+                <th id="header_gate">Gate</th>
+                <th id="header_runway">Runway</th>
+                <th id="header_takeoff">TakesOffTime</th>
+                <th id="header_landing">LandTime</th>
+                <th id="header_arriving">Gate Arrive Time</th>
+                <th id="header_rarriving">Runway Arrive Time</th>
+                <th id="header_speed">Speed</th>
+                <th id="header_pass">Pass engers</th>
+                <th id="header_mpass">Max Pass engers</th>
+                {% if perms.ATC2_0.delete_plane %}
+                <th id="th_plane_2">Delete</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for plane in object_list %}
+                <tr>
+                    {% if perms.ATC2_0.change_plane %}
+                    <td><a href="{% url 'plane_edit' plane.id %}" class="btn btn-primary">Edit</a></td>
+                    {% endif %}
+                 <td>{{ plane.identifier }}</td>
+                    <td>{{ plane.size }}</td>
+                    <td>{{ plane.airline.name }}</td>
+                    <td>{{ plane.take_off_airport.name }}</td>
+                    <td>{{ plane.land_airport.name }}</td>
+                    <td>{{ plane.gate.identifier }}</td>
+                    <td>{{ plane.runway.identifier }}</td>
+                    <td>{{ plane.take_off_time }}</td>
+                    <td>{{ plane.landing_time }}</td>
+                    <td>{{ plane.arrive_at_gate_time }}</td>
+                    <td>{{ plane.arrive_at_runway_time }}</td>
+                    <td>{{ plane.speed }}</td>
+                    <td>{{ plane.currentPassengerCount }}</td>
+                    <td>{{ plane.maxPassengerCount }}</td>
+                    {% if perms.ATC2_0.delete_plane %}
+                    <td><a href="{% url 'plane_delete' plane.id %}" class="btn btn-danger">Delete</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

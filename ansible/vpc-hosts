@@ -1,0 +1,4 @@
+[vpc]
+vpc.ansibled
+[project.ansibled:children]
+vpc

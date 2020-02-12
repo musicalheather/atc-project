@@ -1,0 +1,49 @@
+ansible_connection: local
+
+vpc_name: bju-vpc-test
+vpn_name: bju-vpn-test
+vpc_key: bju-vpc-test
+vpc_dns_zone: bju-vpc-test
+
+aws_region: us-east-1 
+aws_access_key: AKIA2MUEV6DBQYIL3Z3G
+aws_secret_key: 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
+
+vpc_cidr_block: 10.1.0.0/16
+vpc_asn: 64512
+vpc_private_subnet:
+  cidr: 10.1.2.0/24
+  az: "{{ aws_region }}a"
+vpc_public_subnet:
+  cidr: 10.1.1.0/24
+  az: "{{ aws_region }}a"
+vpc_private_subnet_2:
+  cidr: 10.1.3.0/24
+  az: "{{ aws_region }}b"
+vpc_public_subnet_2:
+  cidr: 10.1.4.0/24
+  az: "{{ aws_region }}b"
+
+vpc_security_groups:
+#  - name: vpc
+#    description: "Allow internal traffic in the VPC"
+#    rules:
+#      - proto: all
+#        group_name: vpc
+#        ports: all
+  - name: allow-public-ssh
+    description: "Allow public SSH"
+    rules:
+      - proto: tcp
+        cidr_ip: 0.0.0.0/0
+        ports:
+          - 22
+  - name: allow-public-http
+    description: "Allow public web traffic"
+    rules:
+      - proto: tcp
+        cidr_ip: 0.0.0.0/0
+        ports:
+          - 80
+          - 8080
+          - 443

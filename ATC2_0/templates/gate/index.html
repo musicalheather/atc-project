@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if perms.ATC2_0.add_gate %}
+    <div class="float-right">
+        <a href="{% url 'gate_create' %}" class="btn btn-success">New Gate</a>
+    </div>
+    {% endif %}
+    <div class="clearfix"></div>
+    <table class="table table-striped">
+            <caption> Gates </caption>
+
+        <thead>
+            <tr>
+                {% if perms.ATC2_0.change_gate %}
+                <th id="th_gate_1">Edit</th>
+                {% endif %}
+                <th id="th_gate_2">Identifer</th>
+                <th id="th_gate_3">Size</th>
+                <th id="th_gate_4">Airport</th>
+                {% if perms.ATC2_0.delete_gate %}
+                <th id="th_gate_5">Delete</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for gate in object_list %}
+                <tr>
+                    {% if perms.ATC2_0.change_gate %}
+                    <td><a href="{% url 'gate_edit' gate.id %}" class="btn btn-primary">Edit</a></td>
+                    {% endif %}
+                    <td>{{ gate.identifier }}</td>
+                    <td>{{ gate.size }}</td>
+                    <td>{{ gate.airport.name }}</td>
+                    {% if perms.ATC2_0.delete_gate %}
+                    <td><a href="{% url 'gate_delete' gate.id %}" class="btn btn-danger">Delete</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

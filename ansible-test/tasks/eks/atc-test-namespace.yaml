@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: "atc-project-test"
+
+#commands to push updates
+#aws ecr get-login
+
+#Don't use these commands in production, do a rolling deploy! Update the image instead
+# kubectl apply -f atc-test-namespace.yaml && kubectl apply -f atc-test-deployment.yaml && kubectl apply -f atc-test-service.yaml && kubectl apply -f atc-test-ingress.yaml && kubectl get ingress/atc-test-ingress -n atc-project-test
+
+# kubectl delete -f atc-test-ingress.yaml && kubectl delete -f atc-test-service.yaml && kubectl delete -f atc-test-deployment.yaml && kubectl delete -f atc-test-namespace.yaml
+# kubectl set image deployments/deployment-name app-name=repo:version -n your-namespace
+# kubectl set image deployments/atc-test-deployment atc=714316574915.dkr.ecr.us-east-1.amazonaws.com/atcproject:$CIRCLE_BUILD_NUM -n atc-project-test
+# https://docs.ansible.com/ansible/2.5/modules/k8s_raw_module.html
+
+# kubectl get ingress/atc-test-ingress -n atc-project-test
+# kubectl get pods -n atc-project-test
+# kubectl logs atc-test-deployment-79c4d749d6-58drh -n atc-project-test
+
+#kubectl get pods -A
+#kubectl exec -it atc-deployment-6c49c54b56-2svtr -n atc-project-test -- /bin/bash
+#psql --host atc-database-test.c53bbjeekoxg.us-east-1.rds.amazonaws.com -d atc_project
+

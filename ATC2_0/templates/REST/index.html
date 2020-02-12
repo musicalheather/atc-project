@@ -1,0 +1,11 @@
+{% extends 'noauth_base.html' %}
+
+{% block content %}
+    <h5>This is the api page, you have no business here.</h5>
+    <hr>
+
+    {% for record in errors %}
+        {{ record }}
+        <hr>
+    {% endfor %}
+{% endblock %}

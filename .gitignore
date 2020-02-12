@@ -1,0 +1,6 @@
+__pycache__/
+ATCProject/__pycache__/
+ATC2_0/__pycache__/
+.idea/
+venv/
+ATC2_0/migrations/

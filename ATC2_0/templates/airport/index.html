@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if perms.ATC2_0.add_airline %}
+    <div class="float-right">
+        <a href="{% url 'airport_create' %}" class="btn btn-success">New Airport</a>
+    </div>
+    {% endif %}
+    <div class="clearfix"></div>
+    <table class="table table-striped">
+        <caption> Airport </caption>
+        <thead>
+            <tr>
+                {% if perms.ATC2_0.change_airline %}
+                <th id="th_airport_1">Edit</th>
+                {% endif %}
+                <th id="th_airport_2">Name</th>
+                <th id="th_airport_3">X</th>
+                <th id="th_airport_4">Y</th>
+                {% if perms.ATC2_0.delete_airline %}
+                <th id="th_airport_5">Delete</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for airport in object_list %}
+                <tr>
+                    {% if perms.ATC2_0.change_airline %}
+                    <td><a href="{% url 'airport_edit' airport.id %}" class="btn btn-primary">Edit</a></td>
+                    {% endif %}
+                    <td>{{ airport.name }}</td>
+                    <td>{{ airport.x }}</td>
+                    <td>{{ airport.y }}</td>
+                    {% if perms.ATC2_0.delete_airline %}
+                    <td><a href="{% url 'airport_delete' airport.id %}" class="btn btn-danger">Delete</a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -1,0 +1,22 @@
+ansible_connection: local
+
+aws_region: us-east-1 
+aws_access_key: AKIAS4WH7EEOMRN5VZ5Y
+aws_secret_key: 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
+
+k8s_namespace: "atc-space"
+k8s_ingress: "atc-ingress"
+k8s_service: "atc-service"
+k8s_deployment: "atc-deployment"
+
+k8s_name: "atc"
+k8s_image: 199061610780.dkr.ecr.us-east-1.amazonaws.com/atc
+k8s_version: 5
+k8s_exposed_port: 80
+k8s_container_port: 8000
+
+rds_host: "atc-database.cjf14jmbyflo.us-east-1.rds.amazonaws.com"
+rds_port: "5432"
+rds_db_name: "atc_project"
+rds_user: "postgres"
+rds_pass: "postgres"

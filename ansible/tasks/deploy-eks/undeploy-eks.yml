@@ -1,0 +1,48 @@
+---
+- hosts: vpc
+  vars_files:
+    - vars/eks.yml
+  environment:
+    AWS_ACCESS_KEY_ID: "{{ aws_access_key }}"
+    AWS_SECRET_ACCESS_KEY: "{{ aws_secret_key }}"
+    AWS_REGION: "{{ aws_region }}"
+  tasks:
+    - name: create namespace
+      k8s_raw:
+        state: absent
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: "{{ k8s_namespace }}"
+    
+    - name: create deployment
+      k8s_raw:
+        state: absent
+        definition:
+          apiVersion: extensions/v1beta1
+          kind: Deployment
+          metadata:
+            name: "{{ k8s_deployment }}"
+            namespace: "{{ k8s_namespace }}"
+    
+    - name: create service
+      k8s_raw:
+        state: absent
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: "{{ k8s_service }}"
+            namespace: "{{ k8s_namespace }}"
+          
+    - name: create ingress
+      k8s_raw:
+        state: absent
+        definition:
+          apiVersion: v1beta1
+          kind: Ingress
+          metadata:
+            name: "{{ k8s_ingress }}"
+            namespace: "{{ k8s_namespace }}"
+

@@ -1,0 +1,124 @@
+# Python CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-python/ for more details
+#
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@0.1.16
+jobs:
+  build:
+    docker:
+      # specify the version you desire here
+      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
+      - image: circleci/python:3.6.1
+      - image: postgres:11
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: atc_project
+
+    working_directory: ~/repo
+
+    steps:
+      - setup_remote_docker
+
+      - run:
+          name: create AWS env vars
+          command: |
+            echo 'export AWS_ACCESS_KEY_ID="<ID>"' >> $BASH_ENV
+            echo 'export AWS_SECRET_ACCESS_KEY="<key>"' >> $BASH_ENV
+            echo 'export AWS_DEFAULT_REGION="us-east-1"' >> $BASH_ENV
+
+      - aws-cli/setup:
+          profile-name: default
+
+      - checkout
+
+      - run:
+          name: reset repo to HEAD
+          command: |
+            git reset --hard "$CIRCLE_SHA1"
+            git checkout -q -B "$CIRCLE_BRANCH"
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "requirements.txt" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run:
+          name: install dependencies
+          command: |
+            python3 -m venv venv
+            . venv/bin/activate
+            pip install -r requirements.txt
+
+      - save_cache:
+          paths:
+            - ./venv
+          key: v1-dependencies-{{ checksum "requirements.txt" }}
+
+      - run:
+          name: run tests
+          command: |
+            . venv/bin/activate
+            export DBHOST=localhost
+            export PGUSER=postgres
+            export PGPASS=postgres
+            python manage.py test
+
+      - store_artifacts:
+          path: test-reports
+          destination: test-reports
+
+      - run:
+          name: run sonar analysis
+          command: |
+            sudo apt-get install curl software-properties-common
+            curl -sL https://deb.nodesource.com/setup_12.x | sudo bash -
+            sudo apt install -y nodejs
+            export SONAR_SCANNER_VERSION=4.0.0.1744
+            export SONAR_SCANNER_HOME=$HOME/.sonar/sonar-scanner-$SONAR_SCANNER_VERSION-linux
+            rm -rf $SONAR_SCANNER_HOME
+            mkdir -p $SONAR_SCANNER_HOME
+            curl -sSLo $HOME/.sonar/sonar-scanner.zip https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$SONAR_SCANNER_VERSION-linux.zip
+            unzip $HOME/.sonar/sonar-scanner.zip -d $HOME/.sonar/
+            rm $HOME/.sonar/sonar-scanner.zip
+            export PATH=$SONAR_SCANNER_HOME/bin:$PATH
+            export SONAR_SCANNER_OPTS="-server"
+
+            if [[ -z "${CIRCLE_PULL_REQUEST}" ]]; then
+              sonar-scanner \
+              -Dsonar.projectKey=<project> \
+              -Dsonar.organization=bjucps \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.exclusions=venv/**,ATC_APP/venv/** \
+              -Dsonar.login=<login> \
+              -Dsonar.python.coverage.reportPaths=test-reports/nosecover.xml \
+              -Dsonar.python.xunit.reportPaths=nosetests.xml
+            else
+              echo "checking pull request..."
+              export PR_BUILD_NO=$(python -c "print('$CIRCLE_PULL_REQUEST'.split('/')[-1])")
+              sonar-scanner \
+              -Dsonar.projectKey=bjucps_cps420-project-drop-table-software_engineering \
+              -Dsonar.organization=bjucps \
+              -Dsonar.sources=. \
+              -Dsonar.host.url=https://sonarcloud.io \
+              -Dsonar.login=<login>> \
+              -Dsonar.exclusions=venv/**,ATC_APP/venv/** \
+              -Dsonar.pullrequest.key=$PR_BUILD_NO \
+              -Dsonar.pullrequest.branch=$CIRCLE_BRANCH \
+              -Dsonar.pullrequest.base=master \
+              -Dsonar.python.coverage.reportPaths=test-reports/nosecover.xml \
+              -Dsonar.python.xunit.reportPaths=nosetests.xml
+            fi
+
+      - run:
+          name: docker push
+          command: |
+            docker build . -t atc
+            docker tag atc 714316574915.dkr.ecr.us-east-1.amazonaws.com/atcproject:$CIRCLE_BUILD_NUM
+            $(aws ecr get-login)
+            docker push 714316574915.dkr.ecr.us-east-1.amazonaws.com/atcproject:$CIRCLE_BUILD_NUM
